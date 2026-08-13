@@ -53,6 +53,14 @@ app.post('/api/share', (req, res) => {
   }
 });
 
+// API Endpoint to serve public configuration variables dynamically
+app.get('/api/config', (req, res) => {
+  const host = req.get('host');
+  const isLocal = host.includes('localhost') || host.includes('127.0.0.1');
+  const publicUrl = process.env.PUBLIC_URL || (isLocal ? 'https://frameingoa-hh-goa-2026.onrender.com' : `https://${host}`);
+  res.json({ publicUrl });
+});
+
 // Dynamic route to serve shared cards with custom Open Graph tags
 app.get('/share/:id', (req, res) => {
   const cardId = req.params.id;
@@ -70,10 +78,10 @@ app.get('/share/:id', (req, res) => {
     const builderName = metadata.name;
     const builderRole = metadata.role;
 
-    // Get dynamic public host URL
+    // Get dynamic public host URL (prefers PUBLIC_URL env var if configured)
     const host = req.get('host');
     const isLocal = host.includes('localhost') || host.includes('127.0.0.1');
-    const publicUrl = `${isLocal ? 'http' : 'https'}://${host}`;
+    const publicUrl = process.env.PUBLIC_URL || (isLocal ? 'https://frameingoa-hh-goa-2026.onrender.com' : `https://${host}`);
 
     const imageUrl = `${publicUrl}/cards/${cardId}.png`;
     const sharePageUrl = `${publicUrl}/share/${cardId}`;

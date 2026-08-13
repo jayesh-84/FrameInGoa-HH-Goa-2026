@@ -412,6 +412,44 @@ document.addEventListener('DOMContentLoaded', () => {
     }, intervalTime);
   });
 
+  // Helper to draw a stylized tropical palm leaf
+  function drawPalmLeaf(ctx, x, y, size, angle) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    ctx.strokeStyle = 'rgba(245, 194, 66, 0.08)'; // Subtle gold leaf silhouette
+    ctx.lineWidth = 3;
+    
+    // Draw leaf stem
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.quadraticCurveTo(size * 0.4, size * 0.1, size, 0);
+    ctx.stroke();
+
+    // Draw individual fronds
+    const fronds = 11;
+    for (let i = 1; i < fronds; i++) {
+      const t = i / fronds;
+      const px = size * t;
+      const py = size * 0.1 * Math.sin(t * Math.PI);
+      
+      const length = size * 0.45 * Math.sin(t * Math.PI);
+      
+      // Upper frond
+      ctx.beginPath();
+      ctx.moveTo(px, py);
+      ctx.quadraticCurveTo(px - length * 0.2, py - length * 0.8, px - length * 0.5, py - length);
+      ctx.stroke();
+
+      // Lower frond
+      ctx.beginPath();
+      ctx.moveTo(px, py);
+      ctx.quadraticCurveTo(px - length * 0.2, py + length * 0.8, px - length * 0.5, py + length);
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
   // Canvas Image Rendering Engine
   function generateCardImage() {
     return new Promise(async (resolve, reject) => {
@@ -434,38 +472,26 @@ document.addEventListener('DOMContentLoaded', () => {
       cardCanvas.width = canvasWidth;
       cardCanvas.height = canvasHeight;
 
-      // Draw Background Gradient (Deep Indigo to Dark Purple Space)
+      // Draw Background Gradient (Deep Tropical Forest/Emerald Green)
       const bgGrad = ctx.createLinearGradient(0, 0, 0, canvasHeight);
-      bgGrad.addColorStop(0, '#06040a');
-      bgGrad.addColorStop(0.3, '#0b0816');
-      bgGrad.addColorStop(0.8, '#140c24');
-      bgGrad.addColorStop(1, '#050308');
+      bgGrad.addColorStop(0, '#061d11');   // Deep tropical emerald green
+      bgGrad.addColorStop(0.4, '#04150c'); // Dark forest green
+      bgGrad.addColorStop(1, '#020b06');   // Deepest green-black
       ctx.fillStyle = bgGrad;
       ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
-      // Background Circular Ambient Neon Glows
-      // Orange Sunset Glow (Top Right)
-      const orangeGlow = ctx.createRadialGradient(canvasWidth * 0.9, canvasHeight * 0.1, 50, canvasWidth * 0.9, canvasHeight * 0.1, 650);
-      orangeGlow.addColorStop(0, 'rgba(255, 83, 53, 0.22)');
-      orangeGlow.addColorStop(0.5, 'rgba(255, 83, 53, 0.05)');
-      orangeGlow.addColorStop(1, 'rgba(0, 0, 0, 0)');
-      ctx.fillStyle = orangeGlow;
+      // Background Circular Goa Sunset Glow (Radial Gold to Translucent Pink)
+      const sunGlow = ctx.createRadialGradient(canvasWidth / 2, canvasHeight * 0.35, 30, canvasWidth / 2, canvasHeight * 0.35, 750);
+      sunGlow.addColorStop(0, 'rgba(245, 194, 66, 0.16)'); // Warm Gold
+      sunGlow.addColorStop(0.4, 'rgba(216, 17, 89, 0.08)'); // Sunset Pink/Magenta
+      sunGlow.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      ctx.fillStyle = sunGlow;
       ctx.beginPath();
-      ctx.arc(canvasWidth * 0.9, canvasHeight * 0.1, 650, 0, Math.PI * 2);
+      ctx.arc(canvasWidth / 2, canvasHeight * 0.35, 750, 0, Math.PI * 2);
       ctx.fill();
 
-      // Cyan Cyber Glow (Bottom Left)
-      const cyanGlow = ctx.createRadialGradient(canvasWidth * 0.1, canvasHeight * 0.9, 50, canvasWidth * 0.1, canvasHeight * 0.9, 650);
-      cyanGlow.addColorStop(0, 'rgba(0, 240, 255, 0.20)');
-      cyanGlow.addColorStop(0.5, 'rgba(0, 240, 255, 0.04)');
-      cyanGlow.addColorStop(1, 'rgba(0, 0, 0, 0)');
-      ctx.fillStyle = cyanGlow;
-      ctx.beginPath();
-      ctx.arc(canvasWidth * 0.1, canvasHeight * 0.9, 650, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Cybernetic Background Grid Overlay
-      ctx.strokeStyle = 'rgba(0, 240, 255, 0.04)';
+      // Technical Golden Background Grid Overlay
+      ctx.strokeStyle = 'rgba(245, 194, 66, 0.03)'; // Faint gold grid lines
       ctx.lineWidth = 1.5;
       const gridSize = 60;
       
@@ -488,9 +514,15 @@ document.addEventListener('DOMContentLoaded', () => {
       const cardY = borderPadding;
       const cardW = canvasWidth - borderPadding * 2;
       const cardH = canvasHeight - borderPadding * 2;
-      const cutSize = 45; // Cyberpunk cut diagonal corners
+      const cutSize = 45; // Event-pass diagonal corners
 
-      // Outer Glowing Frame
+      // Draw decorative palm leaves in background corners (behind the frame)
+      drawPalmLeaf(ctx, cardX + 60, cardY + 60, 220, Math.PI * 0.12);
+      drawPalmLeaf(ctx, cardX + cardW - 60, cardY + 60, 220, -Math.PI * 0.62);
+      drawPalmLeaf(ctx, cardX + 60, cardY + cardH - 60, 220, Math.PI * 0.78);
+      drawPalmLeaf(ctx, cardX + cardW - 60, cardY + cardH - 60, 220, -Math.PI * 0.28);
+
+      // Outer Glowing pass frame (Warm Gold)
       ctx.beginPath();
       ctx.moveTo(cardX + cutSize, cardY);
       ctx.lineTo(cardX + cardW - cutSize, cardY);
@@ -501,14 +533,14 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.lineTo(cardX, cardY + cardH - cutSize);
       ctx.lineTo(cardX, cardY + cutSize);
       ctx.closePath();
-      ctx.strokeStyle = 'rgba(0, 240, 255, 0.35)';
-      ctx.lineWidth = 4;
-      ctx.shadowColor = 'rgba(0, 240, 255, 0.25)';
+      ctx.strokeStyle = '#e5b83b'; // Warm Gold Border
+      ctx.lineWidth = 4.5;
+      ctx.shadowColor = 'rgba(229, 184, 59, 0.2)';
       ctx.shadowBlur = 15;
       ctx.stroke();
       ctx.shadowBlur = 0; // reset shadow
 
-      // Inner Sunset Border (inset by 10px)
+      // Inner Border (inset by 10px in Goa Sunset Pink)
       const innerPadding = 10;
       ctx.beginPath();
       ctx.moveTo(cardX + cutSize + innerPadding, cardY + innerPadding);
@@ -520,55 +552,52 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.lineTo(cardX + innerPadding, cardY + cardH - cutSize - innerPadding);
       ctx.lineTo(cardX + innerPadding, cardY + cutSize + innerPadding);
       ctx.closePath();
-      ctx.strokeStyle = 'rgba(255, 83, 53, 0.3)';
-      ctx.lineWidth = 1.5;
+      ctx.strokeStyle = 'rgba(216, 17, 89, 0.35)'; // Faint sunset pink inner border
+      ctx.lineWidth = 2;
       ctx.stroke();
 
       // --- HEADER SECTION (Y: 90 to 220) ---
       
-      // Left side: HH GOA 2026 Title
+      // Left side: HACKER HOUSE GOA Event Branding
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
       
-      ctx.font = '800 20px "JetBrains Mono"';
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
-      ctx.letterSpacing = '6px';
-      ctx.fillText("B U I L D E R   I D E N T I T Y", cardX + 45, cardY + 40);
+      ctx.font = '800 22px "JetBrains Mono"';
+      ctx.fillStyle = '#f5c242'; // Warm Gold
+      ctx.letterSpacing = '5px';
+      ctx.fillText("HACKER HOUSE", cardX + 45, cardY + 45);
 
-      ctx.font = '900 64px "Syne", "Outfit"';
-      ctx.fillStyle = '#ffffff';
+      ctx.font = '900 68px "Syne", "Outfit"';
+      ctx.fillStyle = '#fcfaf2'; // Cream
       ctx.letterSpacing = '0px';
-      ctx.fillText("HH GOA 2026", cardX + 45, cardY + 75);
+      ctx.fillText("GOA 2026", cardX + 45, cardY + 75);
 
-      // Right side: Telemetry & Status Readouts
+      // Right side: Date, Pass Type, Location
       ctx.textAlign = 'right';
-      ctx.font = '600 20px "JetBrains Mono"';
-      ctx.fillStyle = 'rgba(0, 240, 255, 0.9)';
-      ctx.letterSpacing = '1px';
-      ctx.fillText("LOC: 15.2993° N // 73.9859° E", cardX + cardW - 45, cardY + 45);
-
       ctx.font = '800 20px "JetBrains Mono"';
-      ctx.fillStyle = 'rgba(57, 255, 20, 0.9)';
-      ctx.fillText("STATUS: ACTIVE_MEMBER", cardX + cardW - 45, cardY + 80);
+      ctx.fillStyle = '#d81159'; // Goa Sunset Pink
+      ctx.letterSpacing = '2px';
+      ctx.fillText("BUILDER PASS", cardX + cardW - 45, cardY + 48);
 
-      ctx.font = '500 18px "JetBrains Mono"';
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
-      ctx.fillText("PORT_GOA_26 // COMPILER_OK", cardX + cardW - 45, cardY + 110);
+      ctx.font = '600 18px "JetBrains Mono"';
+      ctx.fillStyle = 'rgba(252, 250, 242, 0.65)'; // Semi-translucent cream
+      ctx.letterSpacing = '1px';
+      ctx.fillText("28-31 OCT 2026", cardX + cardW - 45, cardY + 82);
+      ctx.fillText("GOA, INDIA", cardX + cardW - 45, cardY + 110);
 
-      // Glowing Divider Line
-      const dividerY = cardY + 165;
-      const dividerGrad = ctx.createLinearGradient(cardX + 40, 0, cardX + cardW - 40, 0);
-      dividerGrad.addColorStop(0, 'rgba(0, 240, 255, 0)');
-      dividerGrad.addColorStop(0.2, 'rgba(0, 240, 255, 0.45)');
-      dividerGrad.addColorStop(0.8, 'rgba(255, 83, 53, 0.45)');
-      dividerGrad.addColorStop(1, 'rgba(255, 83, 53, 0)');
-      ctx.fillStyle = dividerGrad;
-      ctx.fillRect(cardX + 40, dividerY, cardW - 80, 2);
+      // Warm Gold Accent Line
+      const dividerY = cardY + 155;
+      ctx.strokeStyle = 'rgba(245, 194, 66, 0.25)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(cardX + 40, dividerY);
+      ctx.lineTo(cardX + cardW - 40, dividerY);
+      ctx.stroke();
 
       // --- USER PHOTO PORTRAIT FRAME (Y: 240 to 920) ---
-      // Aspect: 840 width by 680 height (landscape-box to accommodate faces cleanly)
+      // Aspect: 840 width by 640 height
       const photoW = 840;
-      const photoH = 640; // Slightly reduced by 5.88% for better vertical layout balance
+      const photoH = 640;
       const photoX = canvasWidth / 2 - photoW / 2;
       const photoY = cardY + 195;
       const photoCornerCut = 30;
@@ -589,12 +618,12 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.closePath();
       }
 
-      // Draw glowing photo frame container
-      ctx.lineWidth = 2.5;
-      ctx.strokeStyle = 'rgba(255, 83, 53, 0.65)';
-      ctx.shadowColor = 'rgba(255, 83, 53, 0.3)';
-      ctx.shadowBlur = 12;
-      drawPhotoPath(3);
+      // Draw gold photo frame container
+      ctx.lineWidth = 4;
+      ctx.strokeStyle = '#e5b83b'; // Warm Gold Border
+      ctx.shadowColor = 'rgba(229, 184, 59, 0.2)';
+      ctx.shadowBlur = 10;
+      drawPhotoPath(2);
       ctx.stroke();
       ctx.shadowBlur = 0; // reset
 
@@ -628,60 +657,43 @@ document.addEventListener('DOMContentLoaded', () => {
 
         ctx.drawImage(userImg, cropX, cropY, drawW, drawH, photoX, photoY, photoW, photoH);
 
-        // Ambient overlay (Goa dark-sunset gradient)
+        // Ambient overlay (Goa dark forest-green sunset gradient)
         const overlayGrad = ctx.createLinearGradient(photoX, photoY, photoX, photoY + photoH);
-        overlayGrad.addColorStop(0, 'rgba(6, 4, 10, 0.05)');
-        overlayGrad.addColorStop(0.75, 'rgba(6, 4, 10, 0.0)');
-        overlayGrad.addColorStop(1, 'rgba(6, 4, 10, 0.55)');
+        overlayGrad.addColorStop(0, 'rgba(7, 29, 17, 0.05)');
+        overlayGrad.addColorStop(0.75, 'rgba(7, 29, 17, 0.0)');
+        overlayGrad.addColorStop(1, 'rgba(4, 21, 12, 0.45)');
         ctx.fillStyle = overlayGrad;
         ctx.fillRect(photoX, photoY, photoW, photoH);
 
-        // Tech grid lines on photo (Subtle)
-        ctx.strokeStyle = 'rgba(0, 240, 255, 0.08)';
-        ctx.lineWidth = 1;
-        const photoGrid = 40;
-        for (let px = photoX; px < photoX + photoW; px += photoGrid) {
-          ctx.beginPath();
-          ctx.moveTo(px, photoY);
-          ctx.lineTo(px, photoY + photoH);
-          ctx.stroke();
-        }
-        for (let py = photoY; py < photoY + photoH; py += photoGrid) {
-          ctx.beginPath();
-          ctx.moveTo(photoX, py);
-          ctx.lineTo(photoX + photoW, py);
-          ctx.stroke();
-        }
-
         ctx.restore(); // Restore context settings
 
-        // Corner technical brackets drawn on top of the image container
-        ctx.strokeStyle = 'rgba(0, 240, 255, 0.8)';
-        ctx.lineWidth = 5;
-        const brLen = 35; // length
+        // Premium credential corner notches instead of high-tech cyber brackets
+        ctx.strokeStyle = '#e5b83b'; // Warm gold
+        ctx.lineWidth = 4;
+        const brLen = 25;
 
-        // Top Left Bracket
+        // Top Left Notch
         ctx.beginPath();
-        ctx.moveTo(photoX + photoCornerCut + 4, photoY);
-        ctx.lineTo(photoX, photoY + photoCornerCut + 4);
+        ctx.moveTo(photoX + photoCornerCut + 5, photoY);
+        ctx.lineTo(photoX, photoY + photoCornerCut + 5);
         ctx.lineTo(photoX, photoY + photoCornerCut + brLen);
         ctx.stroke();
 
-        // Top Right Bracket
+        // Top Right Notch
         ctx.beginPath();
-        ctx.moveTo(photoX + photoW - photoCornerCut - 4, photoY);
-        ctx.lineTo(photoX + photoW, photoY + photoCornerCut + 4);
+        ctx.moveTo(photoX + photoW - photoCornerCut - 5, photoY);
+        ctx.lineTo(photoX + photoW, photoY + photoCornerCut + 5);
         ctx.lineTo(photoX + photoW, photoY + photoCornerCut + brLen);
         ctx.stroke();
 
-        // Bottom Left
+        // Bottom Left Notch
         ctx.beginPath();
         ctx.moveTo(photoX, photoY + photoH - brLen);
         ctx.lineTo(photoX, photoY + photoH);
         ctx.lineTo(photoX + brLen, photoY + photoH);
         ctx.stroke();
 
-        // Bottom Right
+        // Bottom Right Notch
         ctx.beginPath();
         ctx.moveTo(photoX + photoW - brLen, photoY + photoH);
         ctx.lineTo(photoX + photoW, photoY + photoH);
@@ -728,10 +740,10 @@ document.addEventListener('DOMContentLoaded', () => {
       nameWidth = ctx.measureText(name).width;
     }
 
-    // Draw Name Text with a small glow
-    ctx.fillStyle = '#ffffff';
-    ctx.shadowColor = 'rgba(0, 240, 255, 0.35)';
-    ctx.shadowBlur = 10;
+    // Draw Name Text with a small gold shadow
+    ctx.fillStyle = '#fcfaf2'; // Cream
+    ctx.shadowColor = 'rgba(245, 194, 66, 0.25)'; // Gold shadow glow
+    ctx.shadowBlur = 8;
     ctx.fillText(name, canvasWidth / 2, nameY);
     ctx.shadowBlur = 0; // reset glow
 
@@ -742,7 +754,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const stackY = nameY + nameSize + gapNameToRole;
 
     ctx.font = '800 24px "JetBrains Mono"';
-    ctx.fillStyle = '#00f0ff'; // High-contrast neon cyber cyan hex value for readability
+    ctx.fillStyle = '#f5c242'; // Warm Gold
     ctx.textAlign = 'center';
     ctx.letterSpacing = '1px';
     ctx.fillText(`[ STACK // ${stack} ]`, canvasWidth / 2, stackY);
@@ -758,33 +770,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Maximum width allowed inside the title badge capsule
     const maxCapsuleWidth = 840;
-    const textPadding = 48; // padding inside capsule
-    const maxTextWidth = maxCapsuleWidth - textPadding * 2; // ~740px
+    const textPadding = 24;
+    const lineHeight = 40;
 
-    // Setup wrapping variables
+    // Simple word-wrapping algorithm for dynamic titles
     const words = formattedTitle.split(' ');
-    let currentLine = '';
     const wrappedLines = [];
+    let currentLine = '';
 
-    for (let n = 0; n < words.length; n++) {
-      const testLine = currentLine + words[n] + ' ';
-      ctx.font = `italic 700 ${titleSize}px "Outfit"`;
+    for (let i = 0; i < words.length; i++) {
+      const testLine = currentLine ? `${currentLine} ${words[i]}` : words[i];
       const testWidth = ctx.measureText(testLine).width;
-      
-      if (testWidth > maxTextWidth && n > 0) {
-        wrappedLines.push(currentLine.trim());
-        currentLine = words[n] + ' ';
+      if (testWidth > maxCapsuleWidth - textPadding * 2) {
+        wrappedLines.push(currentLine);
+        currentLine = words[i];
       } else {
         currentLine = testLine;
       }
     }
-    wrappedLines.push(currentLine.trim());
+    if (currentLine) {
+      wrappedLines.push(currentLine);
+    }
 
-    // Calculate badge size properties dynamically based on lines
-    const lineHeight = 42;
     const numLines = wrappedLines.length;
-    
-    // Find the longest rendered line to fit the capsule width closely
     let maxRenderedLineWidth = 0;
     for (let i = 0; i < numLines; i++) {
       const lineWidth = ctx.measureText(wrappedLines[i]).width;
@@ -797,17 +805,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const titleBadgeH = 34 + numLines * lineHeight;
     const titleBadgeX = canvasWidth / 2 - titleBadgeW / 2;
 
-    // Draw Capsule (glassmorphic neon-orange bordered pill box)
-    ctx.fillStyle = 'rgba(255, 83, 53, 0.05)';
-    ctx.strokeStyle = 'rgba(255, 83, 53, 0.4)';
-    ctx.lineWidth = 1.5;
+    // Draw Capsule (solid Goa Sunset Pink with Gold border)
+    ctx.fillStyle = '#d81159'; // Pink/Magenta
+    ctx.strokeStyle = '#f5c242'; // Warm Gold
+    ctx.lineWidth = 2.5;
     ctx.beginPath();
-    ctx.roundRect(titleBadgeX, titleY, titleBadgeW, titleBadgeH, titleBadgeH / 2 > 30 ? 20 : titleBadgeH / 2);
+    ctx.roundRect(titleBadgeX, titleY, titleBadgeW, titleBadgeH, 12); // smooth rounded corners
     ctx.fill();
     ctx.stroke();
 
-    // Render each wrapped line centered inside the badge capsule
-    ctx.fillStyle = '#ff745c'; // High-contrast neon sunset orange hex value for readability
+    // Render each wrapped line centered inside the badge capsule in cream/off-white
+    ctx.fillStyle = '#fcfaf2';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
 
@@ -820,8 +828,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Set baseline divider coordinates
     const footerY = canvasHeight - 210;
 
-    // Tech horizontal divider line
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.04)';
+    // Faint Gold horizontal divider line
+    ctx.strokeStyle = 'rgba(245, 194, 66, 0.15)';
     ctx.lineWidth = 2;
     ctx.beginPath();
     ctx.moveTo(180, footerY);
@@ -837,7 +845,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const barcodeY = contentY;
     const barcodeH = 65;
 
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.65)';
+    ctx.fillStyle = '#fcfaf2'; // Cream barcode lines
     // Pre-calculated clean barcode lines
     const pattern = [4, 8, 2, 6, 2, 8, 12, 4, 2, 10, 6, 4, 8, 2, 4, 6, 12, 2, 8, 6, 4, 10, 2];
     let currentX = barcodeX;
@@ -852,35 +860,33 @@ document.addEventListener('DOMContentLoaded', () => {
     // Barcode identifier log
     const uniqueId = `HHG-26-${generateHash(name || 'BUILDER')}`;
     ctx.font = '600 18px "JetBrains Mono"';
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.35)';
+    ctx.fillStyle = 'rgba(252, 250, 242, 0.4)'; // Muted cream
     ctx.fillText(uniqueId, barcodeX, barcodeY + barcodeH + 10);
 
-    // B. Right column: Verified Stamp
+    // B. Right column: Verified Stamp (Gold and cream event pass markings)
     const stampX = canvasWidth - 180;
     const stampY = contentY;
 
     ctx.textAlign = 'right';
     ctx.font = '800 20px "JetBrains Mono"';
-    ctx.fillStyle = 'rgba(57, 255, 20, 0.85)';
-    ctx.shadowColor = 'rgba(57, 255, 20, 0.35)';
-    ctx.shadowBlur = 8;
-    ctx.fillText("VERIFIED_MEMBER // OK", stampX, stampY + 8);
-    ctx.shadowBlur = 0; // reset
+    ctx.fillStyle = '#f5c242'; // Gold
+    ctx.fillText("VERIFIED PASS // HH GOA 26", stampX, stampY + 8);
 
     ctx.font = '500 18px "JetBrains Mono"';
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
-    ctx.fillText("DEV ACCESS: GRANTED", stampX, stampY + 40);
+    ctx.fillStyle = 'rgba(252, 250, 242, 0.45)'; // Muted cream
+    ctx.fillText("GOA • INDIA", stampX, stampY + 40);
 
     // C. Center graphic: Mini Beach Waves
     const centerX = canvasWidth / 2;
     const centerY = contentY + 25;
 
-    ctx.strokeStyle = 'rgba(0, 240, 255, 0.3)';
+    ctx.strokeStyle = 'rgba(245, 194, 66, 0.45)'; // Gold outer circle
     ctx.lineWidth = 2.5;
     ctx.beginPath();
     ctx.arc(centerX, centerY - 15, 35, 0, Math.PI * 2);
     ctx.stroke();
 
+    ctx.strokeStyle = 'rgba(216, 17, 89, 0.7)'; // Goa Pink/Magenta waves
     ctx.beginPath();
     ctx.moveTo(centerX - 18, centerY - 12);
     ctx.bezierCurveTo(centerX - 10, centerY - 24, centerX - 8, centerY - 4, centerX, centerY - 12);
@@ -889,7 +895,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     ctx.textAlign = 'center';
     ctx.font = '800 16px "JetBrains Mono"';
-    ctx.fillStyle = 'rgba(0, 240, 255, 0.55)';
+    ctx.fillStyle = 'rgba(252, 250, 242, 0.7)'; // Cream label
     ctx.fillText("HH GOA 26", centerX, centerY + 38);
 
     // Render Canvas out to image preview source
@@ -962,9 +968,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const caption = `🚀 I just created my HH Goa 2026 Builder Card with FrameInGoa!\n\nFrame your identity. Showcase your builder story. ⚡\n\n#FrameInGoa #HHGoa2026`;
 
     // 3. Dynamic Share URL
-    const publicUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
-      ? 'https://frameingoa.com' // Fallback for local testing or mock domain
-      : window.location.origin;
+    let publicUrl = 'https://frameingoa-hh-goa-2026.onrender.com'; // Default fallback
+    try {
+      const configRes = await fetch('/api/config');
+      if (configRes.ok) {
+        const configData = await configRes.json();
+        publicUrl = configData.publicUrl;
+      }
+    } catch (err) {
+      console.warn("Failed to fetch public config, using location fallback:", err);
+      const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+      if (!isLocal) {
+        publicUrl = window.location.origin;
+      }
+    }
 
     // If upload was successful, target the share page URL; else fall back to home page URL
     const targetShareUrl = cardId ? `${publicUrl}/share/${cardId}` : publicUrl;
