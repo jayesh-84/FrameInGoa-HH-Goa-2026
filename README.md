@@ -1,8 +1,8 @@
 # 🚀 FrameInGoa – HH Goa 2026 Builder Card Generator
 
-> **Frame your identity. Showcase your builder story.**
+> **Frame your identity. Showcase your builder story. ⚡**
 
-FrameInGoa is a futuristic, interactive web application created for **Hacker House Goa 2026** that allows developers and builders to create personalized **HH Goa 2026 Builder Identity Cards**.
+FrameInGoa is a futuristic web application created for **Hacker House Goa 2026**. It allows developers and builders to create personalized **HH Goa 2026 Builder Identity Cards**.
 
 Users can upload their photo, enter their name, select their technical role, generate a unique builder title, preview their identity card, and download/share their personalized builder card.
 
@@ -10,17 +10,18 @@ Users can upload their photo, enter their name, select their technical role, gen
 
 ## 🎯 Problem / Purpose
 
-Hackathons and developer communities bring together builders from different backgrounds, but participants often lack a simple and engaging way to create a personalized digital identity.
+Hackathons and developer communities bring together builders from different backgrounds, but participants often need a simple and engaging way to create a personalized digital identity.
 
 **FrameInGoa solves this by providing:**
 
-- A quick way to create a personalized builder identity.
-- A visually engaging Hacker House Goa 2026 themed card.
-- A simple photo + profile customization workflow.
-- A shareable digital identity for social media and developer communities.
-- A responsive experience that works across desktop and mobile devices.
+- 🪪 A quick way to create a personalized builder identity.
+- 🎨 A visually engaging Hacker House Goa 2026 themed card.
+- 📸 A simple photo and profile customization workflow.
+- 🔗 A shareable digital identity for social media and developer communities.
+- 📱 A responsive experience across desktop and mobile devices.
+- 🚫 No signup or login required before creating a card.
 
-The goal is to turn a simple participant profile into a **unique digital builder identity**.
+The goal is to transform a simple participant profile into a **unique digital builder identity**.
 
 ---
 
@@ -28,11 +29,20 @@ The goal is to turn a simple participant profile into a **unique digital builder
 
 ### 🪪 Personalized Builder Identity
 
-Create a unique HH Goa 2026 builder card using your personal information.
+Create a unique **HH Goa 2026 Builder Card** using your personal information.
 
 ### 📸 Photo Upload
 
-Upload a builder photo and preview it directly inside the application.
+Upload your builder photo and preview it directly inside the application.
+
+Supported image formats:
+
+- JPG
+- PNG
+- WebP
+- HEIC / HEIF
+
+The application is designed to handle different photo orientations and aspect ratios.
 
 ### 👤 Personal Information
 
@@ -44,121 +54,39 @@ Enter your:
 
 ### 🎲 Fun Builder Title Generator
 
-Generate creative and developer-themed builder titles to personalize your card.
+Generate creative developer-themed builder titles to make your identity card more unique.
 
 ### ⚡ Live Preview
 
-See your builder card update with your information before generating the final card.
+Preview your Builder Card before generating the final image.
 
-### 🎨 Futuristic UI
+### 🎨 Hacker House Goa Theme
 
-The application uses a futuristic cyber/developer aesthetic inspired by:
+The interface and generated card use a Goa-inspired visual identity with:
 
-- Hackathons
-- Developer culture
-- Digital identity
-- Technology
-- Hacker House Goa 2026
+- 🌴 Tropical aesthetics
+- 🏠 Hacker House branding
+- 🌈 Goa-inspired colors
+- 💻 Developer / builder culture
+- ⚡ Futuristic visual elements
 
-### 📱 Responsive Design
+### 📱 Mobile Friendly
 
-The interface is designed to work across:
+The application is designed for users who may access it primarily from their phones.
 
-- Desktop
-- Laptop
-- Tablet
-- Mobile
-- Small-screen devices
+### 📥 Download
 
-### 📥 Download Builder Card
+Generate the final Builder Card as a real PNG image and download it to your device.
 
-Generate your final builder identity card and download it for personal use.
+### 🔗 Share to X
 
-### 🔗 Share Your Builder Identity
+Share your generated Builder Card through X with a pre-filled post containing the FrameInGoa message, hashtags, and share URL.
 
-Share your generated builder card with friends, teammates, and the developer community.
+### 🔗 Shareable Builder Card URL
 
-### 🚫 No Signup Required
+Each generated card receives a unique share ID and share URL.
 
-Users can start creating their builder card without going through a registration process.
-
----
-
-## 🛠️ Tech Stack
-
-### Frontend
-
-- HTML5
-- CSS3
-- JavaScript
-- Responsive CSS
-- Modern UI/UX design
-
-### Backend
-
-- Node.js
-- Express.js
-
-### Development Tools
-
-- Visual Studio Code
-- Git
-- GitHub
-- Chrome DevTools
-
-### Deployment
-
-- Web hosting / cloud deployment
-- GitHub-based source control
-
----
-
-## ⚙️ How It Works
-
-The application follows a simple workflow:
+Example:
 
 ```text
-Open FrameInGoa
-       ↓
-Create My Builder Card
-       ↓
-Upload Builder Photo
-       ↓
-Enter Full Name
-       ↓
-Select Stack / Role
-       ↓
-Generate Fun Builder Title
-       ↓
-Generate Builder Card
-       ↓
-Preview Builder Identity
-       ↓
-Download / Share
-
----
-
-## 👨‍💻 Developer
-
-### Jayesh Patil
-
-🎓 **B.Tech Computer Science (Artificial Intelligence)**  
-🏫 **Parul University, Vadodara, Gujarat**
-
-🔗 **GitHub:** https://github.com/jayesh-84
-
-💼 **LinkedIn:** https://www.linkedin.com/in/jayesh-patil-719426327/
-
-📧 **Email:** jp908261@gmail.com
-
-💡 Passionate about **AI, Full Stack Development, and UI/UX.**
-
----
-
-<div align="center">
-
-### Made with 💗 by Jayesh Patil
-
-⭐ If you found this project useful, please give it a **Star**!
-
-</div>
+/share/{cardId}
