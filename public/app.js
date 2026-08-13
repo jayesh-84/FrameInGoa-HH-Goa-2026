@@ -919,57 +919,72 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.removeChild(link);
   });
 
-  // Share on X (Twitter) handler
-  btnShareX.addEventListener('click', async () => {
-    const text = `Framed my builder journey for HH Goa 2026 🚀
-
-Building, experimenting, and turning ideas into reality.
-
-#FrameInGoa #HHGoa2026 #BuildInPublic`;
+  async function shareOnX() {
+    const name = inputName.value.trim();
+    const role = inputStack.value;
+    const title = inputTitle.value.trim();
     
-    // 1. Try mobile native share API first (supports direct image attachment on iOS/Android)
+    // Temporarily indicate loading state on the button
+    const originalText = btnShareX.innerHTML;
+    btnShareX.disabled = true;
+    btnShareX.innerHTML = `<span>Uploading...</span>`;
+
+    let cardId = '';
     try {
-      const blob = await new Promise(resolve => cardCanvas.toBlob(resolve, 'image/png'));
-      const file = new File([blob], 'hh_goa_2026_builder_card.png', { type: 'image/png' });
-      
-      if (navigator.canShare && navigator.canShare({ files: [file] })) {
-        await navigator.share({
-          files: [file],
-          title: 'HH Goa 2026 Builder Card',
-          text: text
-        });
-        return; // Native share successful
+      // 1. Post generated base64 card image and details to local server
+      const response = await fetch('/api/share', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          image: finalCardImg.src, // Canvas base64 data-url
+          name: name,
+          role: role
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error("Server rejected card share request.");
       }
+
+      const data = await response.json();
+      cardId = data.id;
     } catch (err) {
-      console.warn("Native sharing not supported or cancelled:", err);
+      console.warn("Failed to generate dynamic share URL, falling back to homepage:", err);
     }
 
-    // 2. Desktop Fallback: Copy image to clipboard so they can paste (Ctrl+V) directly on X
-    let copied = false;
-    try {
-      const blob = await new Promise(resolve => cardCanvas.toBlob(resolve, 'image/png'));
-      if (navigator.clipboard && window.ClipboardItem) {
-        await navigator.clipboard.write([
-          new ClipboardItem({ 'image/png': blob })
-        ]);
-        copied = true;
-      }
-    } catch (err) {
-      console.warn("Clipboard copy not supported:", err);
-    }
+    // Restore button text
+    btnShareX.disabled = false;
+    btnShareX.innerHTML = originalText;
 
-    // 3. Open X compose Web Intent URL
-    const tweetText = encodeURIComponent(text);
-    const shareUrl = encodeURIComponent("https://hhgframify.com"); // mock deployment url
-    const xUrl = `https://twitter.com/intent/tweet?text=${tweetText}&url=${shareUrl}`;
+    // 2. Build pre-filled caption dynamically
+    const caption = `🚀 I just created my HH Goa 2026 Builder Card with FrameInGoa!\n\nFrame your identity. Showcase your builder story. ⚡\n\n#FrameInGoa #HHGoa2026`;
+
+    // 3. Dynamic Share URL
+    const publicUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+      ? 'https://frameingoa.com' // Fallback for local testing or mock domain
+      : window.location.origin;
+
+    // If upload was successful, target the share page URL; else fall back to home page URL
+    const targetShareUrl = cardId ? `${publicUrl}/share/${cardId}` : publicUrl;
+
+    const encodedText = encodeURIComponent(caption);
+    const encodedUrl = encodeURIComponent(targetShareUrl);
     
-    window.open(xUrl, '_blank');
-
-    // Notify user if copy succeeded
-    if (copied) {
-      showError("Image copied to clipboard! Paste (Ctrl+V) in the X window to attach.");
+    // Official X intent URL
+    const xUrl = `https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}`;
+    
+    // Open in a new tab safely
+    const newTab = window.open(xUrl, '_blank', 'noopener,noreferrer');
+    
+    // Fallback notification if popup blocker blocks it
+    if (!newTab) {
+      showError("Unable to open X compose window. Please check your browser popup blocker settings.");
     }
-  });
+  }
+
+  btnShareX.addEventListener('click', shareOnX);
 
   // Reset Button handler
   btnReset.addEventListener('click', () => {
