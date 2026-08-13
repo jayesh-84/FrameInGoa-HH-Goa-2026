@@ -135,3 +135,30 @@ Generate Builder Card
 Preview Builder Identity
        ↓
 Download / Share
+
+---
+
+## 👨‍💻 Developer
+
+### Jayesh Patil
+
+🎓 **B.Tech Computer Science (Artificial Intelligence)**  
+🏫 **Parul University, Vadodara, Gujarat**
+
+🔗 **GitHub:** https://github.com/jayesh-84
+
+💼 **LinkedIn:** https://www.linkedin.com/in/jayesh-patil-719426327/
+
+📧 **Email:** jp908261@gmail.com
+
+💡 Passionate about **AI, Full Stack Development, and UI/UX.**
+
+---
+
+<div align="center">
+
+### Made with 💗 by Jayesh Patil
+
+⭐ If you found this project useful, please give it a **Star**!
+
+</div>
