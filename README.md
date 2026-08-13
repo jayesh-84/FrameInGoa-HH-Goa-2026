@@ -90,26 +90,5 @@ Example:
 
 ```text
 /share/{cardId}
-
-## 👨‍💻 Developer
-
-**Jayesh Patil**
-
-🎓 B.Tech Computer Science (Artificial Intelligence)  
-🏫 Parul University, Vadodara, Gujarat  
-
-🔗 GitHub: [jayesh-84](https://github.com/jayesh-84)  
-💼 LinkedIn: [Jayesh Patil](https://www.linkedin.com/in/jayesh-patil-719426327/)
-
-💡 Passionate about AI, Full Stack Development, and UI/UX.
-
----
-
-## 💗 Made with Jayesh Patil
-
-Made with 💗 by **Jayesh Patil**
-
-⭐ If you found this project useful, please give it a **Star**!
-
 ---
 
