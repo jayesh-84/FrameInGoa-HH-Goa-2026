@@ -90,7 +90,6 @@ Example:
 
 ```text
 /share/{cardId}
-
 ## 👨‍💻 Developer
 
 **Jayesh Patil**
