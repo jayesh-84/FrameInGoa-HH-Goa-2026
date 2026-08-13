@@ -18,8 +18,40 @@ if (!fs.existsSync(cardsDir)) {
 // Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Serve generated cards via the specific event-pass /share-image path
-app.use('/share-image', express.static(path.join(__dirname, 'public', 'cards')));
+// Dynamic route to serve generated cards with correct Cache-Control and Content-Type headers
+app.get('/share-image/:id', (req, res) => {
+  let filename = req.params.id;
+  if (!filename.endsWith('.png')) {
+    filename += '.png';
+  }
+  const imagePath = path.join(cardsDir, filename);
+  if (!fs.existsSync(imagePath)) {
+    return res.status(404).send('Image not found');
+  }
+
+  res.setHeader('Content-Type', 'image/png');
+  res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+  res.sendFile(imagePath);
+});
+
+// Health and test route to verify card generation and metadata states
+app.get('/api/share-test/:id', (req, res) => {
+  const cardId = req.params.id;
+  const imagePath = path.join(cardsDir, `${cardId}.png`);
+  const metadataPath = path.join(cardsDir, `${cardId}.json`);
+
+  const publicUrl = process.env.PUBLIC_URL || `https://${req.get('host')}`;
+  const imageUrl = `${publicUrl}/share-image/${cardId}.png`;
+  const sharePageUrl = `${publicUrl}/share/${cardId}`;
+
+  res.json({
+    cardId,
+    imageUrl,
+    shareUrl: sharePageUrl,
+    pngExists: fs.existsSync(imagePath),
+    metadataExists: fs.existsSync(metadataPath)
+  });
+});
 
 // API Endpoint to upload a generated card client-side
 app.post('/api/share', (req, res) => {
@@ -94,9 +126,7 @@ app.get('/share/:id', (req, res) => {
     const builderRole = escapeHtml(metadata.role);
 
     // Get dynamic public host URL (prefers PUBLIC_URL env var if configured)
-    const host = req.get('host');
-    const isLocal = host.includes('localhost') || host.includes('127.0.0.1');
-    const publicUrl = process.env.PUBLIC_URL || (isLocal ? 'https://frameingoa-hh-goa-2026.onrender.com' : `https://${host}`);
+    const publicUrl = process.env.PUBLIC_URL || `https://${req.get('host')}`;
 
     const imageUrl = `${publicUrl}/share-image/${cardId}.png`;
     const sharePageUrl = `${publicUrl}/share/${cardId}`;
