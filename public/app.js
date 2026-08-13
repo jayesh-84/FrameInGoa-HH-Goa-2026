@@ -957,7 +957,13 @@ document.addEventListener('DOMContentLoaded', () => {
       const data = await response.json();
       cardId = data.id;
     } catch (err) {
-      console.warn("Failed to generate dynamic share URL, falling back to homepage:", err);
+      console.error("Failed to generate dynamic share URL:", err);
+      showError("Failed to save card to server. Please try again or download the PNG directly.");
+      
+      // Restore button text and abort share
+      btnShareX.disabled = false;
+      btnShareX.innerHTML = originalText;
+      return;
     }
 
     // Restore button text

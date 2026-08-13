@@ -18,6 +18,9 @@ if (!fs.existsSync(cardsDir)) {
 // Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Serve generated cards via the specific event-pass /share-image path
+app.use('/share-image', express.static(path.join(__dirname, 'public', 'cards')));
+
 // API Endpoint to upload a generated card client-side
 app.post('/api/share', (req, res) => {
   try {
@@ -83,13 +86,13 @@ app.get('/share/:id', (req, res) => {
     const isLocal = host.includes('localhost') || host.includes('127.0.0.1');
     const publicUrl = process.env.PUBLIC_URL || (isLocal ? 'https://frameingoa-hh-goa-2026.onrender.com' : `https://${host}`);
 
-    const imageUrl = `${publicUrl}/cards/${cardId}.png`;
+    const imageUrl = `${publicUrl}/share-image/${cardId}.png`;
     const sharePageUrl = `${publicUrl}/share/${cardId}`;
 
     const titleText = `${builderName} — HH Goa 2026 Builder Card`;
-    const descriptionText = `HH Goa 2026 Builder Card created with FrameInGoa.`;
+    const descriptionText = `Frame your identity. Showcase your builder story.`;
 
-    // Dynamic share HTML response (matches cyberpunk layout of generator landing page)
+    // Dynamic share HTML response (matches tropical pass layout of generator landing page)
     const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -99,18 +102,18 @@ app.get('/share/:id', (req, res) => {
   <meta name="description" content="${descriptionText}">
 
   <!-- Open Graph / Facebook -->
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="${sharePageUrl}">
-  <meta property="og:title" content="${titleText}">
-  <meta property="og:description" content="${descriptionText}">
-  <meta property="og:image" content="${imageUrl}">
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="${sharePageUrl}" />
+  <meta property="og:title" content="${titleText}" />
+  <meta property="og:description" content="${descriptionText}" />
+  <meta property="og:image" content="${imageUrl}" />
 
   <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:url" content="${sharePageUrl}">
-  <meta name="twitter:title" content="${titleText}">
-  <meta name="twitter:description" content="${descriptionText}">
-  <meta name="twitter:image" content="${imageUrl}">
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content="${sharePageUrl}" />
+  <meta name="twitter:title" content="${titleText}" />
+  <meta name="twitter:description" content="${descriptionText}" />
+  <meta name="twitter:image" content="${imageUrl}" />
 
   <!-- Custom Styles -->
   <link rel="stylesheet" href="/style.css">
