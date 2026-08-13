@@ -91,8 +91,6 @@ Example:
 ```text
 /share/{cardId}
 
----
-
 ## 👨‍💻 Developer
 
 **Jayesh Patil**
@@ -112,3 +110,6 @@ Example:
 Made with 💗 by **Jayesh Patil**
 
 ⭐ If you found this project useful, please give it a **Star**!
+
+---
+
