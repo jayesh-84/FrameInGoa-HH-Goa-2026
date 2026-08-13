@@ -134,13 +134,37 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Toast Helper
-  function showError(msg) {
+  function showToast(msg, isSuccess = false) {
     toastMessage.textContent = msg;
+    const toastIcon = errorToast.querySelector('.toast-icon');
+    if (isSuccess) {
+      if (toastIcon) toastIcon.textContent = '🏝️';
+      errorToast.style.borderColor = '#f5c242'; // Gold/Yellow border
+      errorToast.style.boxShadow = '0 15px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(245, 194, 66, 0.2)';
+    } else {
+      if (toastIcon) toastIcon.textContent = '⚠️';
+      errorToast.style.borderColor = 'var(--color-error)';
+      errorToast.style.boxShadow = '0 15px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(255, 51, 95, 0.15)';
+    }
+    
     errorToast.classList.remove('hidden');
-    // Auto hide after 5 seconds
-    setTimeout(() => {
+    
+    if (window.toastTimeout) {
+      clearTimeout(window.toastTimeout);
+    }
+    
+    const delay = isSuccess ? 9000 : 5000;
+    window.toastTimeout = setTimeout(() => {
       errorToast.classList.add('hidden');
-    }, 5000);
+    }, delay);
+  }
+
+  function showError(msg) {
+    showToast(msg, false);
+  }
+
+  function showInstruction(msg) {
+    showToast(msg, true);
   }
 
   btnCloseToast.addEventListener('click', () => {
@@ -293,6 +317,9 @@ document.addEventListener('DOMContentLoaded', () => {
       uploadLoader.classList.add('hidden');
       uploadPreviewContainer.classList.remove('hidden');
       document.getElementById('photo-error').classList.add('hidden');
+
+      // Update badge progress
+      updateFormProgress();
     };
     reader.onerror = () => {
       showError("Error reading image file.");
@@ -394,10 +421,13 @@ document.addEventListener('DOMContentLoaded', () => {
             cardPlaceholder.classList.add('hidden');
             resultContainer.classList.remove('hidden');
             previewStatusBadge.textContent = "GENERATED";
-            previewStatusBadge.style.color = "var(--color-green)";
-            previewStatusBadge.style.borderColor = "rgba(57, 255, 20, 0.3)";
-            previewStatusBadge.style.boxShadow = "var(--glow-green)";
+            previewStatusBadge.style.color = "var(--color-gold)";
+            previewStatusBadge.style.borderColor = "rgba(245, 194, 66, 0.3)";
+            previewStatusBadge.style.boxShadow = "var(--glow-sunset)";
             
+            // Update badge progress
+            updateFormProgress();
+
             // Scroll to preview container on mobile
             if (window.innerWidth <= 900) {
               resultContainer.scrollIntoView({ behavior: 'smooth' });
@@ -970,10 +1000,22 @@ document.addEventListener('DOMContentLoaded', () => {
     btnShareX.disabled = false;
     btnShareX.innerHTML = originalText;
 
-    // 2. Build pre-filled caption dynamically
-    const caption = `🚀 I just created my HH Goa 2026 Builder Card with FrameInGoa!\n\nFrame your identity. Showcase your builder story. ⚡\n\n#FrameInGoa #HHGoa2026`;
+    // Trigger automated download of the generated card PNG to user's local disk
+    try {
+      const downloadLink = document.createElement('a');
+      downloadLink.download = 'hh-goa-2026-builder-card.png';
+      downloadLink.href = finalCardImg.src;
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+    } catch (downloadErr) {
+      console.warn("Auto-download failed inside X share routine:", downloadErr);
+    }
 
-    // 3. Dynamic Share URL
+    // Display clear visual instructions to guide the user on manual upload attachment
+    showInstruction("Your Builder Card has been downloaded. Attach it to your X post using the image button.");
+
+    // 2. Dynamic Share URL
     let publicUrl = 'https://frameingoa-hh-goa-2026.onrender.com'; // Default fallback
     try {
       const configRes = await fetch('/api/config');
@@ -992,11 +1034,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // If upload was successful, target the share page URL; else fall back to home page URL
     const targetShareUrl = cardId ? `${publicUrl}/share/${cardId}` : publicUrl;
 
+    // 3. Build pre-filled caption dynamically with URL embedded on a new line
+    const caption = `🚀 I just created my HH Goa 2026 Builder Card with FrameInGoa!\n\nFrame your identity. Showcase your builder story. ⚡\n\n#FrameInGoa #HHGoa2026\n\n${targetShareUrl}`;
+
     const encodedText = encodeURIComponent(caption);
-    const encodedUrl = encodeURIComponent(targetShareUrl);
     
     // Official X intent URL
-    const xUrl = `https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}`;
+    const xUrl = `https://twitter.com/intent/tweet?text=${encodedText}`;
     
     // Open in a new tab safely
     const newTab = window.open(xUrl, '_blank', 'noopener,noreferrer');
@@ -1008,6 +1052,38 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   btnShareX.addEventListener('click', shareOnX);
+
+  // Dynamic Progress Indicator Calculations
+  function updateFormProgress() {
+    const progressFill = document.getElementById('progress-fill');
+    const progressVal = document.getElementById('progress-val');
+    if (!progressFill || !progressVal) return;
+
+    let progress = 0;
+    
+    // 1. Photo uploaded (25%)
+    if (uploadedImageSrc) {
+      progress += 25;
+    }
+    // 2. Name entered (25%)
+    if (inputName.value.trim().length > 0) {
+      progress += 25;
+    }
+    // 3. Stack selected (25%)
+    if (inputStack.value) {
+      progress += 25;
+    }
+    // 4. Card generated (25%)
+    const isGenerated = !resultContainer.classList.contains('hidden');
+    if (isGenerated) {
+      progress += 25;
+    } else if (inputTitle.value.trim().length > 0) {
+      progress += 15; // partial credit if title exists but not generated yet
+    }
+
+    progressFill.style.width = `${progress}%`;
+    progressVal.textContent = `${progress}% READY`;
+  }
 
   // Reset Button handler
   btnReset.addEventListener('click', () => {
@@ -1029,6 +1105,16 @@ document.addEventListener('DOMContentLoaded', () => {
     if (window.innerWidth <= 900) {
       document.getElementById('input-section').scrollIntoView({ behavior: 'smooth' });
     }
+
+    updateFormProgress();
   });
+
+  // Attach progress calculation listeners
+  inputName.addEventListener('input', updateFormProgress);
+  inputStack.addEventListener('change', updateFormProgress);
+  inputTitle.addEventListener('input', updateFormProgress);
+
+  // Initialize form progress
+  updateFormProgress();
 
 });

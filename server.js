@@ -78,8 +78,20 @@ app.get('/share/:id', (req, res) => {
   try {
     // Read card details
     const metadata = JSON.parse(fs.readFileSync(metadataPath, 'utf-8'));
-    const builderName = metadata.name;
-    const builderRole = metadata.role;
+    
+    // HTML Sanitization utility to prevent script injection in social preview pages
+    const escapeHtml = (unsafe) => {
+      if (!unsafe) return '';
+      return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    };
+
+    const builderName = escapeHtml(metadata.name);
+    const builderRole = escapeHtml(metadata.role);
 
     // Get dynamic public host URL (prefers PUBLIC_URL env var if configured)
     const host = req.get('host');
@@ -101,19 +113,24 @@ app.get('/share/:id', (req, res) => {
   <title>${titleText}</title>
   <meta name="description" content="${descriptionText}">
 
-  <!-- Open Graph / Facebook -->
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="${sharePageUrl}" />
-  <meta property="og:title" content="${titleText}" />
-  <meta property="og:description" content="${descriptionText}" />
-  <meta property="og:image" content="${imageUrl}" />
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="${sharePageUrl}">
+  <meta property="og:title" content="${titleText}">
+  <meta property="og:description" content="${descriptionText}">
+  <meta property="og:image" content="${imageUrl}">
+  <meta property="og:image:secure_url" content="${imageUrl}">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="1500">
+  <meta property="og:image:alt" content="${titleText}">
 
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:url" content="${sharePageUrl}" />
-  <meta name="twitter:title" content="${titleText}" />
-  <meta name="twitter:description" content="${descriptionText}" />
-  <meta name="twitter:image" content="${imageUrl}" />
+  <!-- X / Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="${titleText}">
+  <meta name="twitter:description" content="${descriptionText}">
+  <meta name="twitter:image" content="${imageUrl}">
+  <meta name="twitter:image:alt" content="${titleText}">
 
   <!-- Custom Styles -->
   <link rel="stylesheet" href="/style.css">
@@ -132,7 +149,7 @@ app.get('/share/:id', (req, res) => {
 
     <!-- Card Display -->
     <div class="result-container" style="display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 420px; animation: scaleUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);">
-      <div class="image-wrapper-card" style="margin-bottom: 24px; border-color: rgba(0, 240, 255, 0.45); box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85), 0 0 45px rgba(0, 240, 255, 0.25);">
+      <div class="image-wrapper-card" style="margin-bottom: 24px; border-color: rgba(245, 194, 66, 0.45); box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85), 0 0 45px rgba(245, 194, 66, 0.15);">
         <img src="/cards/${cardId}.png" alt="${titleText}">
         <div class="cyber-corner top-left" aria-hidden="true"></div>
         <div class="cyber-corner top-right" aria-hidden="true"></div>
