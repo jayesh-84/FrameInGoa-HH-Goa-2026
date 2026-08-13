@@ -1,65 +1,137 @@
-# FrameInGoa — HH Goa 2026 Builder Card Generator
+# 🚀 FrameInGoa – HH Goa 2026 Builder Card Generator
 
-A premium, developer-focused, mobile-first web tool to generate custom, high-resolution Hacker House Goa 2026 Builder ID Cards (Format B). Users can upload their photos (supporting JPG, PNG, and HEIC), input their credentials, optionally generate funny builder titles, and immediately generate a real downloadable and shareable PNG.
+> **Frame your identity. Showcase your builder story.**
 
-This application is designed to run 100% client-side (local image resizing, browser-side HEIC conversion, and canvas card compilation). This makes it highly performant, completely private, and deployable on static hosting or lightweight Node servers for free.
+FrameInGoa is a futuristic, interactive web application created for **Hacker House Goa 2026** that allows developers and builders to create personalized **HH Goa 2026 Builder Identity Cards**.
 
-## Features
-
-- **Stunning Cyber-Goa Aesthetics:** Premium dark-mode UI with vibrant neon gradients, glassmorphism, background grids, glowing card previews, and dynamic micro-animations.
-- **Pure Client-Side Canvas Render:** Real PNG image generation using the HTML5 Canvas API, running at social-sharing 4:5 resolution (`1200x1500` pixels) for crisp downloads.
-- **Smart Image Layout:** Automatically detects aspect ratios (portrait, landscape, square) and performs cover crops to center and fit photo positions.
-- **Dynamic HEIC Converter:** Lazy-loads `heic2any` asynchronously from a CDN *only* if the user uploads a `.HEIC`/`.HEIF` file, saving 1MB of bandwidth for non-iOS users.
-- **Local Offscreen Compressor:** Scales large source images (5MB+) down to `1200px` max bounding dimensions using an offscreen canvas. This avoids mobile memory limits and speeds up card compilation.
-- **Optimized for Mobile:** Clamped viewport padding, touch-friendly tap targets (min 48px), and keyboard-adaptive layouts.
-- **Quick Share on X (Twitter):** Hybrid share button that triggers the native OS Share Sheet on mobile (attaching the raw PNG file) and copies the image to the clipboard on desktop (so users can simply Ctrl+V to attach).
+Users can upload their photo, enter their name, select their technical role, generate a unique builder title, preview their identity card, and download/share their personalized builder card.
 
 ---
 
-## Running Locally
+## 🎯 Problem / Purpose
 
-Ensure you have [Node.js](https://nodejs.org) installed on your system.
+Hackathons and developer communities bring together builders from different backgrounds, but participants often lack a simple and engaging way to create a personalized digital identity.
 
-1. **Install Dependencies:**
-   ```bash
-   npm install
-   ```
+**FrameInGoa solves this by providing:**
 
-2. **Configure Environment (Optional):**
-   Copy the example environment file:
-   ```bash
-   cp .env.example .env
-   ```
-   Modify `PORT` inside `.env` if you want to run on a port other than `3000`.
+- A quick way to create a personalized builder identity.
+- A visually engaging Hacker House Goa 2026 themed card.
+- A simple photo + profile customization workflow.
+- A shareable digital identity for social media and developer communities.
+- A responsive experience that works across desktop and mobile devices.
 
-3. **Start the Web Server:**
-   ```bash
-   npm start
-   ```
-
-4. **Open in Browser:**
-   Open [http://localhost:3000](http://localhost:3000) in your web browser.
+The goal is to turn a simple participant profile into a **unique digital builder identity**.
 
 ---
 
-## Deployment Instructions for Render
+## ✨ Features
 
-Render is an excellent platform for deploying this Node.js web application. Follow these instructions:
+### 🪪 Personalized Builder Identity
 
-1. **Push Code to GitHub:** Create a repository on GitHub and push the project files.
-2. **Sign up on Render:** Visit [Render](https://render.com) and log in.
-3. **Create a Web Service:**
-   - Click the **New** button in the dashboard and select **Web Service**.
-   - Connect your GitHub account and select your repository.
-4. **Configure Settings:**
-   - **Name:** `frame-in-goa` (or your preferred name)
-   - **Region:** Select the region closest to your target users (e.g., Singapore for India-based builders).
-   - **Branch:** `main` (or your active branch)
-   - **Runtime:** `Node`
-   - **Build Command:** `npm install`
-   - **Start Command:** `npm start`
-5. **Configure Environment Variables (Optional):**
-   Render automatically assigns a `PORT` variable. If you want to specify a custom override, add it in the **Environment** tab:
-   - Key: `PORT`
-   - Value: `3000` (or another port)
-6. **Deploy:** Click **Deploy Web Service**. Render will install Express, start the server, and provision a free `https://*.onrender.com` domain with SSL.
+Create a unique HH Goa 2026 builder card using your personal information.
+
+### 📸 Photo Upload
+
+Upload a builder photo and preview it directly inside the application.
+
+### 👤 Personal Information
+
+Enter your:
+
+- Full Name
+- Stack / Role
+- Builder Title
+
+### 🎲 Fun Builder Title Generator
+
+Generate creative and developer-themed builder titles to personalize your card.
+
+### ⚡ Live Preview
+
+See your builder card update with your information before generating the final card.
+
+### 🎨 Futuristic UI
+
+The application uses a futuristic cyber/developer aesthetic inspired by:
+
+- Hackathons
+- Developer culture
+- Digital identity
+- Technology
+- Hacker House Goa 2026
+
+### 📱 Responsive Design
+
+The interface is designed to work across:
+
+- Desktop
+- Laptop
+- Tablet
+- Mobile
+- Small-screen devices
+
+### 📥 Download Builder Card
+
+Generate your final builder identity card and download it for personal use.
+
+### 🔗 Share Your Builder Identity
+
+Share your generated builder card with friends, teammates, and the developer community.
+
+### 🚫 No Signup Required
+
+Users can start creating their builder card without going through a registration process.
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+
+- HTML5
+- CSS3
+- JavaScript
+- Responsive CSS
+- Modern UI/UX design
+
+### Backend
+
+- Node.js
+- Express.js
+
+### Development Tools
+
+- Visual Studio Code
+- Git
+- GitHub
+- Chrome DevTools
+
+### Deployment
+
+- Web hosting / cloud deployment
+- GitHub-based source control
+
+---
+
+## ⚙️ How It Works
+
+The application follows a simple workflow:
+
+```text
+Open FrameInGoa
+       ↓
+Create My Builder Card
+       ↓
+Upload Builder Photo
+       ↓
+Enter Full Name
+       ↓
+Select Stack / Role
+       ↓
+Generate Fun Builder Title
+       ↓
+Generate Builder Card
+       ↓
+Preview Builder Identity
+       ↓
+Download / Share
