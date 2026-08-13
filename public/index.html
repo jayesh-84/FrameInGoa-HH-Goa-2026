@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>FrameInGoa — HH Goa 2026 Builder Card Generator</title>
+  <meta name="description" content="Instantly generate your official Builder ID Card for Hacker House Goa 2026. Upload your photo, add your details, and share your builder badge with #FrameInGoa!">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;0,800;1,400&family=Outfit:wght@300;400;500;600;700;800;900&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  
+
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Accessibility Skip Link -->
+  <a href="#generator-tool" class="skip-link">Skip to card generator</a>
+
+  <!-- Futuristic Background Grid & Accents -->
+  <div class="grid-overlay" aria-hidden="true"></div>
+  <div class="glow-sphere orange" aria-hidden="true"></div>
+  <div class="glow-sphere blue" aria-hidden="true"></div>
+  <div class="background-beams" aria-hidden="true"></div>
+
+  <main class="app-container">
+    
+    <!-- Top Header -->
+    <header class="app-header">
+      <div class="logo-wrapper">
+        <span class="logo-accent" aria-hidden="true">⚡</span>
+        <span class="logo-text">FrameInGoa</span>
+      </div>
+      <div class="status-indicator">
+        <span class="pulse-dot" aria-hidden="true"></span>
+        <span class="status-label">DEV ACCESS: SECURED</span>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section" aria-labelledby="hero-title">
+      <div class="badge-tag">🏝️ Hacker House Goa 2026</div>
+      <h1 class="hero-title" id="hero-title">FRAME YOUR BUILDER STORY</h1>
+      <p class="hero-subtitle">Create your HH Goa 2026 Builder Card in seconds.</p>
+      
+      <div class="hero-cta-wrapper">
+        <button type="button" class="btn btn-primary btn-lg" id="btn-hero-cta" aria-controls="generator-tool">
+          <span>Create My Builder Card</span>
+          <span class="btn-scanlines" aria-hidden="true"></span>
+        </button>
+        <p class="hero-subtext">No signup required. Upload → Customize → Generate → Share.</p>
+      </div>
+    </section>
+
+    <!-- Main Tool Workspace -->
+    <div class="main-grid" id="generator-tool">
+      
+      <!-- Input Panel (Left Side) -->
+      <section class="panel panel-input" id="input-section" aria-labelledby="input-panel-heading">
+        <div class="panel-header">
+          <h2 id="input-panel-heading"><span class="step-num">01.</span> BUILDER DETAILS</h2>
+          <span class="panel-badge">GEN_BADGE_V1.1</span>
+        </div>
+
+        <form id="builder-form" class="builder-form" onsubmit="return false;" novalidate>
+          
+          <!-- Image Upload Area -->
+          <div class="form-group">
+            <span class="form-label" id="photo-label">Builder Photo <span class="required" aria-hidden="true">*</span></span>
+            <div class="upload-zone" id="upload-zone" role="button" tabindex="0" aria-labelledby="photo-label" aria-describedby="upload-instructions">
+              <input type="file" id="photo-input" accept="image/png, image/jpeg, image/jpg, image/heic, image/heif" style="display: none;" tabindex="-1">
+              
+              <!-- Initial State -->
+              <div class="upload-prompt" id="upload-prompt">
+                <div class="upload-icon-wrapper">
+                  <svg class="upload-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                  </svg>
+                </div>
+                <p class="upload-title">Drag & drop your photo or <span class="text-glow-orange">Browse</span></p>
+                <p class="upload-sub" id="upload-instructions">Supports PNG, JPG, JPEG, or HEIC. Max size 10MB.</p>
+              </div>
+
+              <!-- Loader State -->
+              <div class="upload-loader hidden" id="upload-loader">
+                <div class="spinner" aria-hidden="true"></div>
+                <p class="loader-text">Processing image...</p>
+                <p class="loader-sub" id="loader-sub">Converting iOS HEIC image. This may take a moment.</p>
+              </div>
+
+              <!-- Preview State -->
+              <div class="upload-preview hidden" id="upload-preview-container">
+                <img src="" id="photo-preview" alt="Uploaded photo preview">
+                <div class="preview-overlay">
+                  <button type="button" class="btn btn-secondary btn-sm" id="btn-change-photo" aria-label="Change uploaded photo">Change Photo</button>
+                </div>
+              </div>
+            </div>
+            <p class="field-error hidden" id="photo-error" role="alert">Please upload a valid image file.</p>
+          </div>
+
+          <!-- Name Input -->
+          <div class="form-group">
+            <label for="input-name" class="form-label">Full Name <span class="required" aria-hidden="true">*</span></label>
+            <div class="input-wrapper">
+              <input type="text" id="input-name" placeholder="Satoshi Nakamoto" autocomplete="off" maxlength="30" required aria-required="true">
+              <span class="input-border-glow" aria-hidden="true"></span>
+            </div>
+            <p class="field-error hidden" id="name-error" role="alert">Please enter your name.</p>
+          </div>
+
+          <!-- Stack/Role Select -->
+          <div class="form-group">
+            <label for="input-stack" class="form-label">Stack / Role <span class="required" aria-hidden="true">*</span></label>
+            <div class="select-wrapper">
+              <select id="input-stack" required aria-required="true">
+                <option value="" disabled selected>Select your stack</option>
+                <option value="Frontend Developer">Frontend Developer</option>
+                <option value="Backend Developer">Backend Developer</option>
+                <option value="Full Stack Developer">Full Stack Developer</option>
+                <option value="Smart Contract / Web3 Dev">Smart Contract / Web3 Dev</option>
+                <option value="AI / ML Engineer">AI / ML Engineer</option>
+                <option value="UI/UX Designer">UI/UX Designer</option>
+                <option value="Product Manager">Product Manager</option>
+                <option value="Growth & Marketing">Growth & Marketing</option>
+                <option value="Solopreneur / Founder">Solopreneur / Founder</option>
+                <option value="Generalist Builder">Generalist Builder</option>
+              </select>
+              <span class="select-arrow" aria-hidden="true"></span>
+            </div>
+            <p class="field-error hidden" id="stack-error" role="alert">Please select your stack/role.</p>
+          </div>
+
+          <!-- Builder Title Input -->
+          <div class="form-group">
+            <div class="title-label-wrapper">
+              <label for="input-title" class="form-label">Builder Title <span class="required" aria-hidden="true">*</span></label>
+              <button type="button" class="btn-text-action" id="btn-random-title" aria-label="Generate a random funny builder title">
+                <span aria-hidden="true">🎲</span> <span>Generate Fun Title</span>
+              </button>
+            </div>
+            <div class="input-wrapper">
+              <input type="text" id="input-title" placeholder="e.g. Async Bug Producer" autocomplete="off" maxlength="40" required aria-required="true">
+              <span class="input-border-glow" aria-hidden="true"></span>
+            </div>
+            <p class="field-error hidden" id="title-error" role="alert">Please enter or generate a title.</p>
+          </div>
+
+          <!-- Action Buttons -->
+          <button type="button" class="btn btn-primary btn-block btn-lg" id="btn-generate">
+            <span class="btn-text">Generate Builder Card</span>
+            <span class="btn-scanlines" aria-hidden="true"></span>
+          </button>
+        </form>
+      </section>
+
+      <!-- Preview Panel (Right Side - Visual Centerpiece) -->
+      <section class="panel panel-preview" id="preview-section" aria-labelledby="preview-panel-heading">
+        <div class="panel-header">
+          <h2 id="preview-panel-heading"><span class="step-num">02.</span> BADGE PREVIEW</h2>
+          <span class="panel-badge" id="preview-status-badge">STANDBY</span>
+        </div>
+
+        <div class="preview-workspace">
+          
+          <!-- Generator Rendering State (Overlay) -->
+          <div class="generator-overlay hidden" id="generator-overlay" role="dialog" aria-modal="true" aria-labelledby="gen-status-text">
+            <div class="matrix-loader">
+              <div class="scanline" aria-hidden="true"></div>
+              <div class="loader-core">
+                <span class="cyber-spin" aria-hidden="true"></span>
+                <span class="loader-percentage" id="loader-pct">0%</span>
+              </div>
+              <p class="gen-status-text" id="gen-status-text">INITIALIZING CORE RENDERING...</p>
+              <div class="loading-bar-outer" aria-hidden="true">
+                <div class="loading-bar-inner" id="loading-bar-inner" style="width: 0%"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card Placeholder (visible before generation) -->
+          <div class="card-placeholder" id="card-placeholder">
+            <div class="placeholder-art">
+              <div class="placeholder-frame" aria-hidden="true">
+                <svg class="placeholder-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                </svg>
+              </div>
+              <p class="placeholder-text">Your card will render here in real-time as you enter your details.</p>
+              <div class="placeholder-tips">
+                <span>⚡ High resolution 1200x1500 PNG output</span>
+                <span>🏝️ Beautiful Goa sunset cyber theme</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Real Canvas Element (Hidden in UI, used for rendering) -->
+          <canvas id="card-canvas" width="1200" height="1500" style="display: none;" aria-hidden="true"></canvas>
+
+          <!-- Generated Image Result Container -->
+          <div class="result-container hidden" id="result-container">
+            <div class="image-wrapper-card">
+              <img id="final-card-img" src="" alt="HH Goa 2026 Builder Card - Final Result">
+              <div class="cyber-corner top-left" aria-hidden="true"></div>
+              <div class="cyber-corner top-right" aria-hidden="true"></div>
+              <div class="cyber-corner bottom-left" aria-hidden="true"></div>
+              <div class="cyber-corner bottom-right" aria-hidden="true"></div>
+            </div>
+            
+            <!-- Result Controls -->
+            <div class="result-actions">
+              <button type="button" class="btn btn-success" id="btn-download">
+                <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                Download PNG
+              </button>
+              <button type="button" class="btn btn-share" id="btn-share-x">
+                <svg class="btn-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                Share on X
+              </button>
+            </div>
+            
+            <button type="button" class="btn btn-secondary btn-block" id="btn-reset" style="margin-top: 15px;">
+              Generate Another
+            </button>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Error Alert Toast -->
+    <div class="toast-error hidden" id="error-toast" role="alert" aria-live="assertive">
+      <span class="toast-icon" aria-hidden="true">⚠️</span>
+      <span class="toast-message" id="toast-message">Something went wrong!</span>
+      <button type="button" class="btn-close-toast" id="btn-close-toast" aria-label="Close error message">&times;</button>
+    </div>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <p>&lt;/&gt; with 💖 by builders for builders at <a href="https://hacker-house-goa-2026.devfolio.co/" target="_blank" rel="noopener" class="footer-link">Hacker House Goa 2026</a></p>
+      <p class="footer-sub">#FrameInGoa — Not affiliated officially, made for the builder community.</p>
+    </footer>
+
+  </main>
+
+  <!-- Main JavaScript App -->
+  <script src="app.js"></script>
+</body>
+</html>

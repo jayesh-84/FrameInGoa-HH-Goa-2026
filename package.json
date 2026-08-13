@@ -1,0 +1,22 @@
+{
+  "name": "hh-goa-2026-builder-card-generator",
+  "version": "1.0.0",
+  "description": "FrameInGoa — HH Goa 2026 Builder Card Generator",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "hackerhouse",
+    "goa",
+    "builder-card",
+    "canvas-api",
+    "card-generator"
+  ],
+  "author": "Antigravity",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
